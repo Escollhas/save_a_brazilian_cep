@@ -20,3 +20,11 @@ class CepModel(db.Model):
     siafi = Column(String(100))
     validated = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DATETIME, default=datetime.now().replace(microsecond=0))
+
+
+class CepSchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = CepModel
+        ordered = True
+        fields = ('id', 'cep', 'logradouro', 'complemento', 'localidade', 'bairro', 'uf', 'ibge', 'gia', 'ddd', 'siafi',
+                  'validated', 'created_at')
