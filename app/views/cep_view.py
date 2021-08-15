@@ -23,7 +23,7 @@ def create_cep():
         my_cep = get_or_create(db.session, CepModel, **data)
         serializer = CepSchema().dump(my_cep)
 
-        return jsonify(serializer), HTTPStatus.OK
+        return jsonify(serializer), HTTPStatus.CREATED
     except KeyError:
         return jsonify({"erro": {"mensagem": "Você precisa inserir um formato e número válido para a requisição",
                                  "exemplo": "cep: 00000-000"}},
