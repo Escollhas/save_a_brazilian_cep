@@ -1,8 +1,8 @@
-"""Create database and cep model
+"""feature:Update CepModel
 
-Revision ID: 15c89689a1a9
+Revision ID: be8e942fc362
 Revises: 
-Create Date: 2021-08-14 19:42:35.762486
+Create Date: 2021-08-15 23:17:23.209700
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '15c89689a1a9'
+revision = 'be8e942fc362'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -31,7 +31,7 @@ def upgrade():
     sa.Column('ddd', sa.String(length=2), nullable=True),
     sa.Column('siafi', sa.String(length=100), nullable=True),
     sa.Column('validated', sa.Boolean(), nullable=True),
-    sa.Column('created_at', sa.DATETIME(), nullable=True),
+    sa.Column('created_at', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('cep')
     )
