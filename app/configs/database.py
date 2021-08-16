@@ -1,12 +1,12 @@
 import os
 
-from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from environs import Env
 
 db = SQLAlchemy()
 ma = Marshmallow()
+
 
 def init_app(app):
     env = Env()

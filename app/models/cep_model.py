@@ -19,7 +19,7 @@ class CepModel(db.Model):
     ddd = Column(String(2))
     siafi = Column(String(100))
     validated = db.Column(db.Boolean, default=False)
-    created_at = db.Column(db.DATETIME, default=datetime.now().replace(microsecond=0))
+    created_at = db.Column(db.String, default=datetime.now().replace(microsecond=0))
 
 
 class CepSchema(ma.SQLAlchemySchema):

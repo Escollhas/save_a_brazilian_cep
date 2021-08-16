@@ -1,12 +1,11 @@
-from http import HTTPStatus
-
 import requests
-from flask import Blueprint, request, jsonify, Response
-from sqlalchemy import exists, or_
+
+from http import HTTPStatus
+from flask import Blueprint, request, jsonify
 from sqlalchemy.orm.exc import UnmappedInstanceError
 from app.configs.database import db
 from app.models.cep_model import CepModel, CepSchema
-from app.services.is_a_suggested_city import validate_city, get_or_create
+from app.services import get_or_create_model, validate_city
 
 bp_cep = Blueprint("cep_route", __name__)
 
@@ -20,10 +19,12 @@ def create_cep():
         data = requests.get(url).json()
         if validate_city(data):
             data['validated'] = True
-        my_cep = get_or_create(db.session, CepModel, **data)
-        serializer = CepSchema().dump(my_cep)
-
-        return jsonify(serializer), HTTPStatus.CREATED
+        my_cep = get_or_create_model(db.session, CepModel, **data)
+        serializer = CepSchema().dump(my_cep['model'])
+        if my_cep['exists']:
+            return jsonify(serializer), HTTPStatus.OK
+        if not my_cep['exists']:
+            return jsonify(serializer), HTTPStatus.CREATED
     except KeyError:
         return jsonify({"erro": {"mensagem": "Você precisa inserir um formato e número válido para a requisição",
                                  "exemplo": "cep: 00000-000"}},
@@ -38,7 +39,6 @@ def create_cep():
 def all_cep():
     cep_schema = CepSchema(many=True)
     all_cep = CepModel.query.all()
-    print(all_cep)
     return jsonify(cep_schema.dump(all_cep)), HTTPStatus.OK
 
 
